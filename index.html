@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Palavritas</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="palavritas.css">
+</head>
+<body>
+
+<!-- ═══════════ MENU ═══════════ -->
+<div id="sMenu" class="screen on">
+<div class="menu-bg" id="menuBg"></div>
+<div class="mc">
+    <div class="badge">PALAVRITAS</div>
+    <div class="logo">P<span>A</span>L<span>A</span>V<span>R</span>I<span>T</span>AS</div>
+    <div class="sub">Monte, Aprenda e Brinque!</div>
+    <div class="mbtns">
+    <button class="mb mb-g" onclick="startGame()">&#9654; Novo Jogo</button>
+    <button class="mb mb-y" onclick="goCredits()">&#9733; Créditos</button>
+    <button class="mb mb-w" onclick="exitApp()">Sair do Jogo</button>
+    </div>
+</div>
+</div>
+
+<!-- ═══════════ CREDITS ═══════════ -->
+<div id="sCredits" class="screen">
+<div class="cr-hdr">
+    <button class="cr-bk" onclick="goMenu()">&#8592;</button>
+    <div class="cr-ttl">Créditos</div>
+</div>
+<div class="cr-body">
+    <div class="cr-card">
+    <div class="cr-lbl">Criadores do Projeto</div>
+    <div class="creator"><div class="av" style="background:#5BBF2A">TB</div><div><div class="cn">Tawany B. P. Costa</div><div class="cra">RA: 52421921</div></div></div>
+    <div class="creator"><div class="av" style="background:#F7A800">MP</div><div><div class="cn">Mariana S. Paixão</div><div class="cra">RA: 52523232</div></div></div>
+    <div class="creator"><div class="av" style="background:#3B7DD8">DB</div><div><div class="cn">Diego Borges</div><div class="cra">RA: 52624804</div></div></div>
+    </div>
+    <div class="cr-card">
+    <div class="cr-lbl">Instituição</div>
+    <div class="ir"><span class="ii">&#127979;</span><span><strong>UniMax Indaiatuba</strong> — Grupo UNIEDUK</span></div>
+    <div class="ir"><span class="ii">&#127760;</span><span>unimax.grupounieduk.com.br</span></div>
+    <div class="ir"><span class="ii">&#128247;</span><span>Instagram: @UniMax Indaiatuba</span></div>
+    <div class="ir"><span class="ii">&#128205;</span><span>Av. 9 de Dezembro, 460 — Jd. Pedroso, Indaiatuba – SP</span></div>
+    </div>
+    <div class="cr-card">
+    <div class="cr-lbl">Sobre o Jogo</div>
+    <p style="font-size:.93rem;color:var(--mid);font-weight:600;line-height:1.55;">Palavritas é baseado no clássico <strong>Jogo do 15</strong>, substituindo números por letras. O objetivo é formar a palavra-objetivo deslizando as peças. Recurso pedagógico alinhado à BNCC para o Ensino Fundamental (1º ao 4º ano).</p>
+    </div>
+    <button class="mb mb-g" style="max-width:none;width:100%;" onclick="goMenu()">&#8592; Voltar ao Menu</button>
+    <div style="height:24px;"></div>
+</div>
+</div>
+
+<!-- ═══════════ GAME ═══════════ -->
+<div id="sGame" class="screen">
+  <div class="g-hdr">
+    <button class="psbtn" onclick="openPause()" title="Pausar">&#9646;&#9646;</button>
+    <div class="hw">
+      <div class="hl">Palavra-objetivo</div>
+      <div class="hts" id="hdrTiles"></div>
+    </div>
+    <div class="tmr" id="timerEl">0:00</div>
+  </div>
+  <div class="gbody">
+    <div class="srow">
+      <div class="sp"><div class="spv" id="sMoves">0</div><div class="spl">Movimentos</div></div>
+      <div class="sp"><div class="spv" id="sDiff">&#127807;</div><div class="spl">Nível</div></div>
+    </div>
+    <div class="dbar">
+      <button class="db on" id="dbIn" onclick="setDiff('i')">&#127807; Iniciante</button>
+      <button class="db" id="dbCl" onclick="setDiff('c')">&#11088; Clássico</button>
+    </div>
+    <div class="bo"><div id="board"></div></div>
+    <div style="font-size:.78rem;font-weight:600;color:var(--muted);text-align:center;">
+      Arraste as peças ou toque para mover &mdash; forme a palavra e clique em Verificar
+    </div>
+    <button class="subbtn" onclick="submitWord()">&#10003; Verificar Palavra</button>
+    <div style="width:100%;height:1px;background:rgba(0,0,0,.06);"></div>
+    <div class="selrow">
+      <select id="wSel" onchange="if(this.value)pickWord(this.value)">
+        <option value="">&#8212; Escolha uma palavra &#8212;</option>
+      </select>
+      <button class="icbtn" onclick="randWord()" title="Palavra aleatória">&#9632;</button>
+    </div>
+    <div class="rescard">
+      <div class="reslbl">Reserva de letras</div>
+      <div class="reswrap" id="resTiles"></div>
+    </div>
+    <div class="swaphint" id="swapHint">Toque uma peça no tabuleiro para trocar com a letra selecionada</div>
+    <div style="height:24px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════ PAUSE OVERLAY ═══════════ -->
+<div class="ov" id="oPause">
+  <div class="ovc" style="gap:10px;">
+    <div class="ovt" style="font-size:1.5rem;">&#9646;&#9646; Pausado</div>
+    <div class="ovdiv"></div>
+    <div class="ovbtns">
+      <button class="ob ob-g" onclick="closePause()">&#9654; Retomar Partida</button>
+      <button class="ob ob-y" onclick="restartSame()">&#8635; Recomeçar (mesma palavra)</button>
+      <button class="ob ob-y" onclick="newRandWord()">&#9646;&#9646; Jogar Novamente</button>
+      <div class="ovdiv"></div>
+      <button class="ob ob-w" onclick="goMenuFromGame()">&#8962; Sair do Jogo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ WIN OVERLAY ═══════════ -->
+<div class="ov" id="oWin">
+  <div class="ovc">
+    <div style="font-size:3.4rem;">&#11088;</div>
+    <div class="ovt">Parabéns!</div>
+    <div class="ovs" id="oWinW"></div>
+    <div class="ovm" id="oWinM"></div>
+    <div class="ovbtns">
+      <button class="ob ob-g" onclick="newRandWord()">&#9646;&#9646; Jogar Novamente</button>
+      <button class="ob ob-y" id="diffBtn" onclick="changeDiff()"></button>
+      <div class="ovdiv"></div>
+      <button class="ob ob-w" onclick="goMenuFromGame()">&#8962; Sair do Jogo</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast">Palavra incorreta! Continue tentando.</div>
+<div id="conf"></div>
+
+<script src="palavritas.js"></script>
+</body>
+</html>
